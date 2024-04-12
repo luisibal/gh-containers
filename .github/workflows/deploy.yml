@@ -10,7 +10,12 @@ env:
 jobs:
   test:
     environment: testing
+    # steps on the 'test' job will run inside of the specified container but still be hosted in the ubuntu-latest machine
     runs-on: ubuntu-latest
+    #specify the name of the image (e.g. from dockerhub)
+    container:
+      image: node:16
+      #env variables for the image (independent fomr job environments variables)
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb+srv
       MONGODB_CLUSTER_ADDRESS: cluster0.zcecven.mongodb.net
