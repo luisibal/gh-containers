@@ -10,18 +10,30 @@ env:
 jobs:
   test:
     environment: testing
-    # steps on the 'test' job will run inside of the specified container but still be hosted in the ubuntu-latest machine
+    # steps on the 'test' job will run inside of the specified container, but still be hosted in the ubuntu-latest machine
     runs-on: ubuntu-latest
     #specify the name of the image (e.g. from dockerhub)
     container:
       image: node:16
       #env variables for the image (independent fomr job environments variables)
     env:
-      MONGODB_CONNECTION_PROTOCOL: mongodb+srv
-      MONGODB_CLUSTER_ADDRESS: cluster0.zcecven.mongodb.net
-      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
-      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      MONGODB_CONNECTION_PROTOCOL: mongodb
+      #here mongodb is the label of the service container as a connection address, github
+      MONGODB_CLUSTER_ADDRESS: mongodb
+      # MONGODB_CLUSTER_ADDRESS: cluster0.zcecven.mongodb.net
+      MONGODB_USERNAME: root
+      MONGODB_PASSWORD: example
       PORT: 8080
+    # services allways run inside images
+    services:
+      # service container label used for networking
+      mongodb:
+        image: mongo
+        #specify env variables, https://hub.docker.com/_/mongo
+        env:
+          #crential for new db inside the service
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: example
     steps:
       - name: Get Code
         uses: actions/checkout@v3
