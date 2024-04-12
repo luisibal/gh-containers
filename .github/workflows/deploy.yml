@@ -13,14 +13,14 @@ jobs:
     # steps on the 'test' job will run inside of the specified container, but still be hosted in the ubuntu-latest machine
     runs-on: ubuntu-latest
     #specify the name of the image (e.g. from dockerhub)
-    # container:
-    #   image: node:16
+    container:
+      image: node:16
       #env variables for the image (independent fomr job environments variables)
     env:
       #here mongodb protocol is the default for a mongo db (for a cluster is mongodb+srv)
       MONGODB_CONNECTION_PROTOCOL: mongodb
       #here mongodb is the label of the service container as a connection address, to establish a network connection with the service container
-      MONGODB_CLUSTER_ADDRESS: 127.0.0.1:27017
+      MONGODB_CLUSTER_ADDRESS: mongodb
       # MONGODB_CLUSTER_ADDRESS: cluster0.zcecven.mongodb.net
       MONGODB_USERNAME: root
       MONGODB_PASSWORD: example
@@ -30,8 +30,6 @@ jobs:
       # service container label used for networking
       mongodb:
         image: mongo
-        ports:
-          - 27017:27017
         #specify env variables, https://hub.docker.com/_/mongo
         env:
           #crential for new db inside the service
